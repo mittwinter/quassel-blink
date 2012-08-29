@@ -1,8 +1,8 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 
 import dbus
 from dbus.mainloop.glib import DBusGMainLoop
-import gobject
+from gi.repository import GLib
 import subprocess
 
 blinkThinkLightUseSudo = True
@@ -33,5 +33,5 @@ sessionBus.add_match_string_non_blocking( "type='method_call',interface='org.fre
 sessionBus.add_message_filter( filterNotifications )
 
 # run event loop:
-gobject.MainLoop().run()
+GLib.MainLoop().run()
 
