@@ -3,10 +3,8 @@
 import dbus
 from dbus.mainloop.glib import DBusGMainLoop
 from gi.repository import GLib
-import subprocess
 
-blinkThinkLightUseSudo = True
-blinkThinklightHelper = '/usr/local/bin/blink-thinklight.py'
+import thinklight
 
 # set up main event loop:
 DBusGMainLoop( set_as_default = True )
@@ -23,11 +21,7 @@ def filterNotifications( bus, message ):
 	if len( args ) != 8 or len( args ) < 3 or str( args[ 2 ] ) != 'quassel':
 		return
 	else:
-		thinklightCommand = []
-		if blinkThinkLightUseSudo:
-			thinklightCommand += [ '/usr/bin/sudo' ]
-		thinklightCommand += [ blinkThinklightHelper ]
-		subprocess.call( thinklightCommand )
+		thinklight.ThinkLight().blink( 5, 0.1 )
 
 sessionBus.add_match_string_non_blocking( "type='method_call',interface='org.freedesktop.Notifications',member='Notify',path='/org/freedesktop/Notifications',eavesdrop='true'" )
 sessionBus.add_message_filter( filterNotifications )
